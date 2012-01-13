@@ -1,0 +1,155 @@
+#!/usr/bin/env python
+# Copyright (c) 2011 Seth Davis http://www.curiasolutions.com/
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish, dis-
+# tribute, sublicense, and/or sell copies of the Software, and to permit
+# persons to whom the Software is furnished to do so, subject to the fol-
+# lowing conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABIL-
+# ITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+#
+import sys, os, getopt
+import mutagen
+
+__version__ = '0.1'
+
+usage_string = """
+pytagdump v0.1
+Copyright (c) 2011 Seth Davis
+http://github.com/seedifferently/pytagdump
+
+SYNOPSIS
+    pytagdump is a simple utility to print the ID3/tag info of various files
+    supported by the "mutagen" package.
+
+USAGE
+    pytagdump [OPTIONS] file(s)
+
+EXAMPLES
+    pytagdump [OPTIONS] ~/Music/*.mp3
+ or
+    pytagdump [OPTIONS] "~/Music/Rick Astley - Never Gonna Give You Up.mp3"
+
+OPTIONS
+    -j/--json       Dump tag info in the JSON format (make sure you have Python
+                    v2.6+ or have installed the JSON package).
+    -y/--yaml       Dump tag info in the YAML format (make sure you have
+                    installed the PyYAML package).
+    -v/--verbose    Print additional informational messages.
+"""
+
+def usage():
+    """Prints the usage string and exits."""
+    print usage_string
+    
+    sys.exit()
+
+def get_full_path(path):
+    """
+    Returns a full path with special markers such as "~" and "$USER" expanded.
+    """
+    path = os.path.expanduser(path)
+    path = os.path.expandvars(path)
+    if path and path.endswith(os.sep):
+        path = os.path.abspath(path) + os.sep
+    else:
+        path = os.path.abspath(path)
+    return path
+
+def print_comment(msg):
+    """Print a message in the specified output format."""
+    global output
+    
+    if output == 'json':
+        print '// %s' % msg
+    elif output == 'yaml':
+        print '# %s' % msg
+    else:
+        print msg
+
+def print_json(data, type=''):
+    """Outputs tag data using JSON formatting."""
+    from json import dumps
+    
+    print dumps(data)
+
+def print_yaml(data, type=''):
+    """Outputs tag data using YAML formatting."""
+    from yaml import safe_dump
+    
+    print safe_dump(data)
+
+
+def main():
+    global output
+    
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'jyvh',
+                                   ['json', 'yaml', 'verbose', 'help'])
+    except:
+        usage()
+    
+    output = ''
+    verbose = False
+    
+    for o, a in opts:
+        if o in ('-j', '--json'):
+            output = 'json'
+        elif o in ('-y', '--yaml'):
+            output = 'yaml'
+        elif o in ('-v', '--verbose'):
+            verbose = True
+        elif o in ('-h', '--help'):
+            usage()
+            sys.exit()
+    
+    if len(args) < 1:
+        usage()
+    
+    # Loop through the specified files and try to read the tag info
+    for file in args:
+        file = get_full_path(file)
+        fname = os.path.split(file)[1]
+        data = dict()
+        
+        # Skip items that aren't actually files
+        if not os.path.isfile(file):
+            if verbose:
+                print_comment('%s is not a valid file. Skipping...' % fname)
+            continue
+        
+        try:
+            tag = mutagen.File(file, easy=True)
+            
+            if not tag:
+                raise Exception
+        except:
+            if verbose:
+                print_comment('Error reading %s. Skipping...' % fname)
+            continue
+        
+        # Format the data dict with the filename as the parent element
+        data[fname] = dict(tag)
+        
+        # Print output
+        if output == 'json':
+            print_json(data)
+        elif output == 'yaml':
+            print_yaml(data)
+        else:
+            print data
+
+if __name__ == "__main__":
+    main()
