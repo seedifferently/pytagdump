@@ -47,6 +47,7 @@ OPTIONS
                     v2.6+ or have installed the JSON package).
     -y/--yaml       Dump tag info in the YAML format (make sure you have
                     installed the PyYAML package).
+    -i/--info       Include additional info (bitrate, length, etc) in tag dump.
     -v/--verbose    Print additional informational messages.
 """
 
@@ -96,12 +97,13 @@ def main():
     global output
     
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'jyvh',
-                                   ['json', 'yaml', 'verbose', 'help'])
+        opts, args = getopt.getopt(sys.argv[1:], 'jyivh',
+                                   ['json', 'yaml', 'info', 'verbose', 'help'])
     except:
         usage()
     
     output = ''
+    info = False
     verbose = False
     
     for o, a in opts:
@@ -109,6 +111,8 @@ def main():
             output = 'json'
         elif o in ('-y', '--yaml'):
             output = 'yaml'
+        elif o in ('-i', '--info'):
+            info = True
         elif o in ('-v', '--verbose'):
             verbose = True
         elif o in ('-h', '--help'):
@@ -142,6 +146,12 @@ def main():
         
         # Format the data dict with the filename as the parent element
         data[fname] = dict(tag)
+        
+        if info:
+            try:
+                data[fname].update(tag.info.__dict__)
+            except:
+                pass
         
         # Print output
         if output == 'json':
