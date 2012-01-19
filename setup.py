@@ -18,7 +18,7 @@ except IOError:
 
 setup(
     name='pytagdump',
-    version='0.2',
+    version='0.3',
     author='Seth Davis',
     author_email='seth@curiasolutions.com',
     description="A simple utility to print the ID3/tag info of various " + \
