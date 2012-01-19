@@ -59,7 +59,9 @@ Options
                     v2.6+ or have installed the JSON package).
     -y/--yaml       Dump tag info in the YAML format (make sure you have
                     installed the PyYAML package).
-    -i/--info       Include additional info (bitrate, length, etc) in tag dump.
+    -i/--info       Include additional meta info (bitrate, length, etc) in tag
+                    dump.
+    -s/--size       Include file size (in bytes) in tag dump.
     -v/--verbose    Print additional informational messages.
 
 
