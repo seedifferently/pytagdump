@@ -145,8 +145,17 @@ def main():
         try:
             tag = mutagen.File(file, easy=True)
             
+            # Read additional meta info if specified
+            if info:
+                try:
+                    tag_info = tag.info.__dict__
+                except:
+                    tag_info = dict()
+            
             if not tag:
-                raise Exception
+                # There could still be other meta info...
+                if not info or not tag_info:
+                    raise Exception
         except:
             if verbose:
                 print_comment('Error reading %s. Skipping...' % fname)
@@ -155,19 +164,13 @@ def main():
         # Format the data dict with the filename as the parent element
         data[fname] = dict(tag)
         
-        # Read additional meta info if specified
-        if info:
-            try:
-                data[fname].update(tag.info.__dict__)
-            except:
-                pass
+        # Load additional meta info if specified
+        if info and tag_info:
+            data[fname].update(tag_info)
         
         # Read file size if specified
         if size:
-            try:
-                data[fname]['size'] = os.path.getsize(file)
-            except:
-                pass
+            data[fname]['size'] = os.path.getsize(file)
         
         # Print output
         if output == 'json':
