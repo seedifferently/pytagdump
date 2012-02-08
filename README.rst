@@ -18,16 +18,25 @@ Installation
 
 To install, simply::
 
-    pip install http://github.com/seedifferently/pytagdump/zipball/master
+    pip install pytagdump
 
 * You'll need to have `Python`_ 2.5+ and `pip`_ installed.
 * You might have to be root (or use sudo) for pip to install the script into a
   globally executable directory in your $PATH.
+* For JSON output support, make sure you have at least Python v2.6 (or
+  install the simplejson package for Python v2.5).
+* For YAML output support, make sure you install the PyYAML package.
+* Optonally, you can use pip's `setuptools extras`_ syntax to have either (or
+  both) of these packages automatically installed for you. e.g. `pip install
+  pytagdump[JSON,YAML]`
 * pip should automatically install mutagen for you, but the advanced user can
   find it here: http://code.google.com/p/mutagen/
 
 .. _Python: http://www.python.org
 .. _pip: http://www.pip-installer.org
+.. _setuptools extras: http://peak.telecommunity.com/DevCenter/setuptools
+                       #declaring-extras-optional-features-with-their-own-
+                       dependencies
 
 
 Usage
@@ -55,10 +64,8 @@ Options
 
 ::
 
-    -j/--json       Dump tag info in the JSON format (make sure you have Python
-                    v2.6+ or have installed the JSON package).
-    -y/--yaml       Dump tag info in the YAML format (make sure you have
-                    installed the PyYAML package).
+    -j/--json       Dump tag info in the JSON format.
+    -y/--yaml       Dump tag info in the YAML format.
     -i/--info       Include additional meta info (bitrate, length, etc) in tag
                     dump.
     -s/--size       Include file size (in bytes) in tag dump.

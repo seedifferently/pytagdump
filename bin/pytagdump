@@ -43,10 +43,8 @@ EXAMPLES
     pytagdump [OPTIONS] "~/Music/Rick Astley - Never Gonna Give You Up.mp3"
 
 OPTIONS
-    -j/--json       Dump tag info in the JSON format (make sure you have Python
-                    v2.6+ or have installed the JSON package).
-    -y/--yaml       Dump tag info in the YAML format (make sure you have
-                    installed the PyYAML package).
+    -j/--json       Dump tag info in the JSON format.
+    -y/--yaml       Dump tag info in the YAML format.
     -i/--info       Include additional meta info (bitrate, length, etc) in tag
                     dump.
     -s/--size       Include file size (in bytes) in tag dump.
