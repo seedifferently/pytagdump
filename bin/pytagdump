@@ -84,13 +84,24 @@ def print_comment(msg):
 
 def print_json(data, type=''):
     """Outputs tag data using JSON formatting."""
-    from json import dumps
+    try:
+        from json import dumps
+    except ImportError:
+        try:
+            from simplejson import dumps
+        except ImportError:
+            sys.exit('ERROR: JSON support is not installed\n'
+                     'Please read the docs for information on JSON support.')
     
     print dumps(data)
 
 def print_yaml(data, type=''):
     """Outputs tag data using YAML formatting."""
-    from yaml import safe_dump
+    try:
+        from yaml import safe_dump
+    except ImportError:
+        sys.exit('ERROR: YAML support is not installed\n'
+                 'Please read the docs for information on YAML support.')
     
     print safe_dump(data)
 
