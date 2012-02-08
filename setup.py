@@ -4,10 +4,16 @@ try:
 except ImportError:
     from setuptools import setup
 
+extras_require = {
+    'YAML': ['PyYAML >= 3.10'],
+    'JSON': []
+}
 
 if sys.version_info[0] >= 3 or sys.version_info[:2] < (2, 5):
-    raise RuntimeError('Requires Python 2.5 or above and does not support ' + \
+    raise RuntimeError('Requires Python 2.5 or above and does not support '
                        'Python 3')
+elif sys.version_info[:2] < (2, 6):
+    extras_require['JSON'] = ['simplejson >= 2.3']
 
 here = os.path.abspath(os.path.dirname(__file__))
 try:
@@ -28,6 +34,7 @@ setup(
     keywords='mutagen ID3',
     packages=[],
     install_requires=['mutagen >= 1.20'],
+    extras_require=extras_require,
     scripts=['bin/pytagdump'],
     license = "MIT",
     platforms = "Posix; MacOS X; Windows",
