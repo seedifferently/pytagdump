@@ -24,8 +24,8 @@ To install, simply::
 * You might have to be root (or use sudo) for pip to install the script into a
   globally executable directory in your $PATH.
 * For JSON output support, make sure you have at least Python v2.6 (or
-  install the simplejson package for Python v2.5).
-* For YAML output support, make sure you install the PyYAML package.
+  install the `simplejson` package for Python v2.5).
+* For YAML output support, make sure you install the `PyYAML` package.
 * Optonally, you can use pip's `setuptools extras`_ syntax to have either (or
   both) of these packages automatically installed for you. e.g. `pip install
   pytagdump[JSON,YAML]`
