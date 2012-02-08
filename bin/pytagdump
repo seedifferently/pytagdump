@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2011 Seth Davis http://www.curiasolutions.com/
+# Copyright (c) 2012 Seth Davis http://www.curiasolutions.com/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -27,7 +27,7 @@ __version__ = '0.3'
 
 usage_string = """
 pytagdump v0.3
-Copyright (c) 2011 Seth Davis
+Copyright (c) 2012 Seth Davis
 http://github.com/seedifferently/pytagdump
 
 SYNOPSIS

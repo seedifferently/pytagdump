@@ -2,7 +2,7 @@
 pytagdump v0.3
 ================================================================================
 
-| Copyright: (c) 2011 Seth Davis
+| Copyright: (c) 2012 Seth Davis
 | http://github.com/seedifferently/pytagdump
 
 
